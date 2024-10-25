@@ -25,14 +25,21 @@ const produceLeak = (done) => {
 };
 
 let leakDetected = false;
+let prev;
 observe({
   roundToBytes: 1,
   logger: (message) => {
-    console.error(message);
+    if (prev !== message) {
+      console.log(message);
+      prev = message;
+    } else {
+      throw Error("Duplicated message");
+    }
     leakDetected = true;
   },
 });
 
 produceLeak(() => {
   assert(leakDetected, "Expected a leak to be detected");
+  console.log("[pass]");
 });

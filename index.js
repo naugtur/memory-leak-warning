@@ -13,7 +13,7 @@ const saveHistory = (data, length, evaluate) => ({
     data[key].push(value);
     if (data[key].length > length) {
       data[key].shift();
-      evaluate(data);
+      evaluate(key, data[key]);
     }
   },
 });
@@ -26,24 +26,22 @@ module.exports = {
   } = {}) => {
     const data = {};
 
-    const heapHistory = saveHistory(data, historyLength, (data) => {
-      Object.entries(data).forEach(([key, history]) => {
-        let prev = 0;
-        let isGrowing = true;
-        history.some((size) => {
-          if (size <= prev) {
-            isGrowing = false;
-            prev = size;
-            return true;
-          }
+    const heapHistory = saveHistory(data, historyLength, (key, history) => {
+      let prev = 0;
+      let isGrowing = true;
+      history.some((size) => {
+        if (size <= prev) {
+          isGrowing = false;
           prev = size;
-        });
-        if (isGrowing) {
-          logger(
-            `Heap '${key}' was growing for ${historyLength} consecutive GCs, ${history}`
-          );
+          return true;
         }
+        prev = size;
       });
+      if (isGrowing) {
+        logger(
+          `Heap '${key}' was growing for ${historyLength} consecutive GCs, ${history}`
+        );
+      }
     });
     const obs = new PerformanceObserver((list) => {
       if (list.getEntries().length > 0) {

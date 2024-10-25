@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Detect memory leaks in Node.js apps.",
   "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "node test.js"
   },

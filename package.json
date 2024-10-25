@@ -1,0 +1,19 @@
+{
+  "name": "@naugtur/memory-leak-warning",
+  "version": "1.0.0",
+  "description": "Detect memory leaks in Node.js apps.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "memory",
+    "leak",
+    "warning",
+    "observe",
+    "heap",
+    "detect"
+  ],
+  "author": "naugtur",
+  "license": "Apache-2.0"
+}
